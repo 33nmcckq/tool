@@ -3,11 +3,11 @@ setfpscap(2)
 
 getgenv().gagConfig = {
     -- Event:
-    CRAFT_EVENT = { "Anti Bee Egg", "Skyroot Chest","Sprout Egg", },
-    BUY_TRAVELING_MERCHANT = { "Bee Egg","Rare Summer Egg","Paradise Egg", "Common Summer Egg",},
-    CLAIM_FOOD_CONNOISSEUR_REWARD = {"Culinarian Chest", "Gourmet Egg", "Gorilla Chef"},
+    CRAFT_EVENT = { "Anti Bee Egg", "Skyroot Chest","Sprout Egg" },
+    BUY_TRAVELING_MERCHANT = { "Bee Egg","Rare Summer Egg","Paradise Egg", "Common Summer Egg" },
+    CLAIM_FOOD_CONNOISSEUR_REWARD = { "Culinarian Chest", "Gourmet Egg", "Gorilla Chef" },
     MAX_EVENT_RESTOCK_SHECKLES = 50_000_000_000_000,  -- Restock stop at 48m
-    BUY_EVENT_SHOP = { "Sprout Egg", "Sprout Seed Pack", },
+    BUY_EVENT_SHOP = { "Sprout Egg", "Sprout Seed Pack" },
     PLANT_EVENT_TREES = true,  -- This config will replace most plant related config
     GET_HONEY = true,
     
@@ -19,7 +19,7 @@ getgenv().gagConfig = {
     ADD_FRIEND = true,
     OPEN_ALL_SEED_PACK = false,
     
-    BUY_EGGS = { "Bug Egg", "Bee Egg", "Paradise Egg", "Mythical Egg", "Rare Summer Egg", "Common Summer Egg", "Rare Egg", "Uncommon Egg","Rare Summer Egg","Legendary Egg", },
+    BUY_EGGS = { "Bug Egg", "Bee Egg", "Paradise Egg", "Mythical Egg", "Rare Summer Egg", "Common Summer Egg", "Rare Egg", "Uncommon Egg","Rare Summer Egg","Legendary Egg" },
     PLANT_EGGS = { "Zen Egg", "Sprout Egg", "Gourmet Egg", "Corrupted Zen Egg", "Dinosaur Egg", "Primal Egg", "Anti Bee Egg", "Bee Egg", "Night Egg", "Bug Egg", "Paradise Egg", "Mythical Egg", "Common Summer Egg", "Rare Egg", "Uncommon Egg" },
     
     BUY_SEED_SHOP = { "Romanesco", "Elder Strawberry", "Giant Pinecone", "Burning Bud", "Sugar Apple", "Ember Lily", "Beanstalk", "Cacao", "Pepper", "Mushroom", "Grape", "Mango", "Dragon Fruit", "Cactus", ["Coconut"] = 50, ["Bamboo"] = 50, ["Apple"] = 50, ["Pumpkin"] = 50, ["Watermelon"] = 50, ["Daffodil"] = 50, ["Tomato"] = 50, ["Orange Tulip"] = 50, ["Blueberry"] = 50, ["Strawberry"] = 50, ["Carrot"] = 50 },
@@ -51,7 +51,7 @@ getgenv().gagConfig = {
             "Seal",
             ["Rooster"]=8,
         "Griffin",
-    "Capybara", },
+    "Capybara" },
     KEEP_PETS_WEIGHT = 7,
     KEEP_PETS_AGE = 76,
 
@@ -69,7 +69,7 @@ getgenv().gagConfig = {
 			"Lightning Rod",
 			"Level Up Lollipop",
 			"Medium Treat",
-			"Medium Toy", },
+			"Medium Toy" },
     USE_SPRINKLER = { "Watering Can",
 			"Master Sprinkler",
 			"Trading Ticket",
@@ -80,7 +80,7 @@ getgenv().gagConfig = {
 			"Lightning Rod",
 			"Level Up Lollipop",
 			"Medium Treat",
-			"Medium Toy", },
+			"Medium Toy" },
 
     PET_WEBHOOK_URL = "https://discord.com/api/webhooks/1336698241584205825/l9JnIq8wuklP36IdC_OTqVxclOcxuSL9aYEWJ4C70HcQeGnLmFtOIX1BXeVqzU1JNot4",
     SEED_WEBHOOK_URL = "", 
