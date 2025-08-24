@@ -5,6 +5,7 @@ getgenv().gagConfig = {
     -- Event:
     CRAFT_EVENT = { "Anti Bee Egg", "Skyroot Chest","Sprout Egg", },
     BUY_TRAVELING_MERCHANT = { "Bee Egg","Rare Summer Egg","Paradise Egg", "Common Summer Egg",},
+    CLAIM_FOOD_CONNOISSEUR_REWARD = {"Culinarian Chest", "Gourmet Egg", "Gorilla Chef"},
     MAX_EVENT_RESTOCK_SHECKLES = 50_000_000_000_000,  -- Restock stop at 48m
     BUY_EVENT_SHOP = { "Sprout Egg", "Sprout Seed Pack", },
     PLANT_EVENT_TREES = true,  -- This config will replace most plant related config
