@@ -6,17 +6,17 @@ getgenv().gagConfig = {
     CRAFT_EVENT = { "Anti Bee Egg", "Skyroot Chest","Sprout Egg", },
     BUY_TRAVELING_MERCHANT = { "Bee Egg","Rare Summer Egg","Paradise Egg", "Common Summer Egg",},
     MAX_EVENT_RESTOCK_SHECKLES = 50_000_000_000_000,  -- Restock stop at 48m
-    BUY_EVENT_SHOP = { "Sprout Egg", "Sprout Seed Pack", "Skyroot Chest" },
+    BUY_EVENT_SHOP = { "Sprout Egg", "Sprout Seed Pack", },
     PLANT_EVENT_TREES = true,  -- This config will replace most plant related config
     GET_HONEY = true,
     
     -- General:
-    AUTO_UPDATE_RESTART = true,
+    AUTO_UPDATE_RESTART = false,
     REDEEM_CODES = {},
     EXTRA_PET_SLOTS = 5,
     EXTRA_EGG_SLOTS = 5,
     ADD_FRIEND = true,
-    OPEN_ALL_SEED_PACK = true,
+    OPEN_ALL_SEED_PACK = false,
     
     BUY_EGGS = { "Bug Egg", "Bee Egg", "Paradise Egg", "Mythical Egg", "Rare Summer Egg", "Common Summer Egg", "Rare Egg", "Uncommon Egg","Rare Summer Egg","Legendary Egg", },
     PLANT_EGGS = { "Zen Egg",
