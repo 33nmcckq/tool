@@ -1,0 +1,118 @@
+local Rep = game:GetService("ReplicatedStorage")
+local CraftRemote = Rep.GameEvents.CraftingGlobalObjectService
+local bench = workspace.Interaction.UpdateItems.Model.GiantCraftingWorkBench
+local player = game.Players.LocalPlayer
+
+-- 🔎 Lấy tất cả UUID của itemName từ Backpack + Character
+local function getUUID(itemName, used)
+    for _, item in ipairs(player.Backpack:GetChildren()) do
+        if string.find(item.Name, itemName) and item:GetAttribute("c") and not used[item:GetAttribute("c")] then
+            return item:GetAttribute("c")
+        end
+    end
+    for _, item in ipairs(player.Character:GetChildren()) do
+        if string.find(item.Name, itemName) and item:GetAttribute("c") and not used[item:GetAttribute("c")] then
+            return item:GetAttribute("c")
+        end
+    end
+    return nil
+end
+
+-- 📌 Chọn recipe
+local function setRecipe(recipeName)
+    CraftRemote:FireServer("SetRecipe", bench, "GiantBeanstalkEventWorkbench", recipeName)
+    print("📜 Đã chọn recipe:", recipeName)
+end
+
+-- 📤 Input item vào slot
+local function inputItem(slot, itemName, itemType, used)
+    local uuid = getUUID(itemName, used)
+    if not uuid then
+        warn("❌ Thiếu item:", itemName)
+        return false
+    end
+
+    local args = {
+        [1] = "InputItem",
+        [2] = bench,
+        [3] = "GiantBeanstalkEventWorkbench",
+        [4] = slot,
+        [5] = {
+            ["ItemType"] = itemType,
+            ["ItemData"] = {["UUID"] = uuid}
+        }
+    }
+    CraftRemote:FireServer(unpack(args))
+    used[uuid] = true
+    print("✅ "..itemName.." -> slot "..slot)
+
+    return true
+end
+
+-- 🛠 Craft
+local function doCraft()
+    CraftRemote:FireServer("Craft", bench, "GiantBeanstalkEventWorkbench")
+    print("🎉 Đã craft xong")
+end
+
+-- 📦 Claim + Spin
+local function claimAndSpin()
+    local args = {
+        [1] = "Claim",
+        [2] = bench,
+        [3] = "GiantBeanstalkEventWorkbench",
+        [4] = 1
+    }
+    CraftRemote:FireServer(unpack(args))
+    print("📦 Đã Claim sản phẩm thành công")
+
+    -- Spin
+    game:GetService("ReplicatedStorage").GameEvents.SeedPack.SpinFinished:FireServer()
+    local extraArgs = {
+        [1] = false,
+        [2] = CFrame.new(-125.4154, 183.2402, -43.8324) * CFrame.Angles(-2.31748, 1.18203, 2.35622)
+    }
+    game:GetService("Players").LocalPlayer.PlayerScripts.InputGateway.Activation:FireServer(unpack(extraArgs))
+    print("✅ Đã gửi SpinFinished & Activation")
+end
+
+-- 🔁 Luồng craft Skyroot Chest
+local function craftSkyrootChest()
+    setRecipe("Skyroot Chest")
+    local used = {}
+
+    -- Beanstalk 1
+    if not inputItem(1, "Beanstalk", "Holdable", used) then return end
+    task.wait(2)
+
+    -- Beanstalk 2
+    if not inputItem(2, "Beanstalk", "Holdable", used) then return end
+    task.wait(2)
+
+    -- Sprout Seed Pack
+    if not inputItem(3, "Sprout Seed Pack", "Seed Pack", used) then return end
+    task.wait(0.5)
+
+    -- Sprout Egg
+    if not inputItem(4, "Sprout Egg", "PetEgg", used) then return end
+    task.wait(0.5)
+
+    -- Craft + Claim + Spin
+    doCraft()
+    task.wait(1)
+    claimAndSpin()
+end
+
+-- 🔂 Vòng lặp auto
+task.spawn(function()
+    local count = 0
+    while true do
+        count += 1
+        print("🔄 Bắt đầu lần craft thứ "..count)
+
+        craftSkyrootChest()
+
+        print("⏳ Chờ 1800 giây trước lần craft tiếp theo...")
+        task.wait(1800)
+    end
+end)
