@@ -1,88 +1,149 @@
-local Rep = game:GetService("ReplicatedStorage")
-local CraftRemote = Rep.GameEvents.CraftingGlobalObjectService
-local bench = workspace.Interaction.UpdateItems.Model.GiantCraftingWorkBench
-local player = game.Players.LocalPlayer
+--================= ONE-LOADER (MAIN + DELAYED FPS) =================--
 
--- Lấy tất cả UUID của itemName
-local function getUUIDs(itemName)
-    local plr = game.Players.LocalPlayer
-    local uuids = {}
-
-    for _, item in ipairs(plr.Backpack:GetChildren()) do
-        if string.find(item.Name, itemName) and item:GetAttribute("c") then
-            table.insert(uuids, item:GetAttribute("c"))
-        end
-    end
-
-    for _, item in ipairs(plr.Character:GetChildren()) do
-        if string.find(item.Name, itemName) and item:GetAttribute("c") then
-            table.insert(uuids, item:GetAttribute("c"))
-        end
-    end
-
-    return uuids
-end
-
--- Gửi input vào slot
-local function inputItem(slot, itemName, itemType, uuid)
-    local args = {
-        [1] = "InputItem",
-        [2] = bench,
-        [3] = "GiantBeanstalkEventWorkbench",
-        [4] = slot,
-        [5] = {
-            ["ItemType"] = itemType,
-            ["ItemData"] = {["UUID"] = uuid}
+--== MAIN SCRIPT (GIỮ NGUYÊN) ==--
+local MAIN_SCRIPT = [==[
+repeat wait() until game:IsLoaded() and game.Players.LocalPlayer
+getgenv().Key = "da28bbeb018df09dfd89c0b5"
+    getgenv().SettingFarm ={
+        ["Multiple Attack"] = true, --// this is fast attack added by me
+        ["Hide UI"] = true,
+        ["Reset Teleport"] = {
+            ["Enabled"] = false,
+            ["Delay Reset"] = 3,
+            ["Item Dont Reset"] = {
+                ["Fruit"] = {
+                    ["Enabled"] = true,
+                    ["All Fruit"] = true, 
+                    ["Select Fruit"] = {
+                        ["Enabled"] = false,
+                        ["Fruit"] = {},
+                    },
+                },
+            },
+        },
+        ["White Screen"] = false,
+        ["Lock Fps"] = {
+            ["Enabled"] = true,
+            ["FPS"] = 20,
+        },
+        ["Get Items"] = {
+            ["Saber"] = true,
+            ["Godhuman"] =  true,
+            ["Skull Guitar"] = true,
+            ["Mirror Fractal"] = true,
+            ["Cursed Dual Katana"] = true,
+            ["Upgrade Race V2-V3"] = true,
+            ["Auto Pull Lever"] = true,
+            ["Shark Anchor"] = true, --- if have cdk,sg,godhuman
+        },
+        ["Get Rare Items"] = {
+            ["Rengoku"] = true,
+            ["Dragon Trident"] = true, 
+            ["Pole (1st Form)"] = true,
+            ["Gravity Blade"]  = true,
+        },
+        ["Farm Fragments"] = {
+            ["Enabled"]  = true,
+            ["Fragment"] = 25000,
+        },
+        ["Auto Chat"] = {
+            ["Enabled"] = false,
+            ["Text"] = "sell god max dms dis luxu_75840",
+        },
+        ["Auto Summon Rip Indra"] = true, --- auto buy haki and craft haki legendary 
+        ["Select Hop"] = { -- 70% will have it
+            ["Hop Server If Have Player Near"] = true, 
+            ["Hop Find Rip Indra Get Valkyrie Helm or Get Tushita"] = true, 
+            ["Hop Find Dough King Get Mirror Fractal"] = true,
+            ["Hop Find Raids Castle [CDK]"] = true,
+            ["Hop Find Cake Queen [CDK]"] = true,
+            ["Hop Find Soul Reaper [CDK]"] = true,
+            ["Hop Find Darkbeard [SG]"] = true,
+            ["Hop Find Mirage [ Pull Lever ]"] = true,
+        },
+        ["Farm Mastery"] = {
+            ["Melee"] = true,
+            ["Sword"] = true,
+        },
+        ["Buy Haki"] = {
+            ["Enhancement"] = true,
+            ["Skyjump"] = true,
+            ["Flash Step"] = true,
+            ["Observation"] = true,
+        },
+        ["Sniper Fruit Shop"] = {
+            ["Enabled"] = true, -- Auto Buy Fruit in Shop Mirage and Normal
+            ["Fruit"] = {"Kitsune-Kitsune", "Leopard-Leopard", "Dragon-Dragon", "Control-Control", "Dough-Dough", "T-Rex-T-Rex", "Mammoth-Mammoth", "Buddha-Buddha", "Lightning-Lightning", "Yeti-Yeti", "Gas-Gas"},
+        },
+        ["Lock Fruit"] = {"Kitsune-Kitsune", "Leopard-Leopard", "Dragon-Dragon", "Control-Control", "Dough-Dough", "T-Rex-T-Rex", "Mammoth-Mammoth", "Buddha-Buddha", "Lightning-Lightning", "Yeti-Yeti", "Gas-Gas"},
+        ["Webhook"] = {
+            ["Enabled"] = false,
+            ["WebhookUrl"] = "",
         }
     }
-    CraftRemote:FireServer(unpack(args))
-    print("✅ "..itemName.." (UUID: "..uuid..") -> slot "..slot)
-end
-
--- Auto Craft (Beanstalk 1 = uuid[1], Beanstalk 2 = uuid[2])
-local function autoCraft(recipeName, itemsNeeded)
-    -- chọn công thức
-    CraftRemote:FireServer("SetRecipe", bench, "GiantBeanstalkEventWorkbench", recipeName)
-
-    for slot, data in ipairs(itemsNeeded) do
-        local uuids = getUUIDs(data.Name)
-        if uuids[slot] then
-            inputItem(slot, data.Name, data.Type, uuids[slot])
-        elseif uuids[1] then
-            inputItem(slot, data.Name, data.Type, uuids[1])
-        else
-            warn("❌ Không tìm thấy item: "..data.Name)
-        end
-    end
-
-    -- thực hiện craft
-    CraftRemote:FireServer("Craft", bench, "GiantBeanstalkEventWorkbench")
-    print("🎉 Đã craft xong: "..recipeName)
-
-    -- Claim sau khi craft
-    local args = {
-        [1] = "Claim",
-        [2] = bench,
-        [3] = "GiantBeanstalkEventWorkbench",
-        [4] = 1
-    }
-    CraftRemote:FireServer(unpack(args))
-    print("📦 Đã Claim sản phẩm thành công")
-end
-
--- 🌀 Lặp lại mỗi 600 giây
-task.spawn(function()
-    local count = 0
-    while true do
-        count += 1
-        print("🔄 Bắt đầu lần craft thứ "..count)
-        autoCraft("Skyroot Chest", {
-            {Name = "Beanstalk", Type = "Holdable"},
-            {Name = "Beanstalk", Type = "Holdable"},
-            {Name = "Sprout Seed Pack", Type = "Seed Pack"},
-            {Name = "Sprout Egg", Type = "PetEgg"},
-        })
-        print("⏳ Chờ 600 giây trước lần craft tiếp theo...")
-        task.wait(60)
-    end
+loadstring(game:HttpGet("https://raw.githubusercontent.com/obiiyeuem/vthangsitink/main/BananaCat-kaitunBF.lua"))()
+task.delay(6,function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/SkibidiHub111/BloxFruit/refs/heads/main/ConfigBanana"))()
 end)
+]==]
+
+task.spawn(function()
+    local f, err = loadstring(MAIN_SCRIPT, "MainWrapper")
+    if not f then warn("[MAIN] load error: ", err) return end
+    pcall(f)
+end)
+
+--== FPS OVERLAY: DELAY 10 GIÂY, TRÊN GIỮA (MÀU ĐỎ) ==--
+task.delay(10, function()
+    local RS = game:GetService("RunService")
+    local CoreGui = game:GetService("CoreGui")
+
+    local old = CoreGui:FindFirstChild("FPSOverlay_ChatGPT")
+    if old then old:Destroy() end
+
+    local gui = Instance.new("ScreenGui")
+    gui.Name = "FPSOverlay_ChatGPT"
+    gui.IgnoreGuiInset = true
+    gui.ResetOnSpawn = false
+    gui.ZIndexBehavior = Enum.ZIndexBehavior.Global
+    gui.DisplayOrder = 999999
+    gui.Parent = CoreGui
+
+    local lbl = Instance.new("TextLabel")
+    lbl.AnchorPoint = Vector2.new(0.5, 0)
+    lbl.Position = UDim2.new(0.5, 0, 0, 10) -- giữa trên
+    lbl.Size = UDim2.new(0, 300, 0, 80)
+    lbl.BackgroundTransparency = 1
+    lbl.Text = "FPS"
+    lbl.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.ExtraBold)
+    lbl.TextColor3 = Color3.fromRGB(255, 0, 0)     -- << MÀU ĐỎ
+    lbl.TextStrokeTransparency = 0.25              -- viền rõ hơn
+    lbl.TextStrokeColor3 = Color3.fromRGB(0, 0, 0) -- viền đen
+    lbl.TextXAlignment = Enum.TextXAlignment.Center
+    lbl.TextYAlignment = Enum.TextYAlignment.Top
+    lbl.TextScaled = true
+    lbl.ZIndex = 1001
+    lbl.Parent = gui
+
+    local shadow = lbl:Clone()
+    shadow.TextColor3 = Color3.fromRGB(0, 0, 0)
+    shadow.TextTransparency = 0.2
+    shadow.Position = UDim2.new(0.5, 2, 0, 12)
+    shadow.ZIndex = 1000
+    shadow.Parent = gui
+
+    local smoothed, accum = 60, 0
+    RS.RenderStepped:Connect(function(dt)
+        local fps = 1 / math.max(dt, 1/1000)
+        smoothed = smoothed + (fps - smoothed) * 0.12
+        accum += dt
+        if accum >= 0.1 then
+            local n = tostring(math.floor(smoothed + 0.5))
+            lbl.Text = n
+            shadow.Text = n
+            accum = 0
+        end
+    end)
+end)
+
+--================= /ONE-LOADER =================--
